@@ -7,10 +7,17 @@ public class Raycast_Pickup : MonoBehaviour
     [SerializeField] private LayerMask pickupLayer;
     [SerializeField] private string pickupTag = "Pickupable";
     [SerializeField] private Camera mainCam;
+
+    [SerializeField] private DialogPannel dialogPannel;
+    
     public float throwForce = 10f;
 
     [SerializeField] private Vector3 offset;
+    
+    
+    
     private GameObject pickedObject;
+    private GameObject lookedAtObject;
     private bool objectHeld;
 
     private void Start()
@@ -26,17 +33,15 @@ public class Raycast_Pickup : MonoBehaviour
         // Cast a ray from the camera's position forward
         Ray ray = new Ray(mainCam.transform.position, mainCam.transform.forward);
 
-        // Draw the ray in the Scene view for visualization
         Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.green);
 
-        // Check if the ray hits an object within the specified distance and on the specified layer
         if (Physics.Raycast(ray, out RaycastHit hit, raycastDistance, pickupLayer))
         {
-            // You can still check the tag if needed
             if (hit.collider.CompareTag(pickupTag))
             {
-                // Log the name of the object
                 Debug.Log("Looking at " + hit.collider.gameObject.name);
+                lookedAtObject = hit.collider.gameObject;
+                DisplayText(false);
 
                 if (Input.GetButtonDown("Fire1"))
                 {
@@ -44,12 +49,13 @@ public class Raycast_Pickup : MonoBehaviour
                 }
             }
         }
-
+        //Throw
         if (Input.GetButtonDown("Fire1") && objectHeld)
         {
             ThrowObject();
             StartCoroutine(UpdateObjectHeld(false));
         }
+        //Release
         if (Input.GetButtonDown("Fire2") && objectHeld)
         {
             ReleaseObject();
@@ -63,6 +69,35 @@ public class Raycast_Pickup : MonoBehaviour
         {
             UpdatePickedObjectPosition();
         }
+    }
+
+
+
+
+
+    private void DisplayText(bool picked)
+    {
+        if (!picked)
+        {
+            TranslateTextSettings(lookedAtObject.GetComponent<Pickupable>().settings);
+        }
+        else
+        {
+
+        }
+    }
+
+    private void TranslateTextSettings(TextSettings textSettings)
+    {
+//title
+        dialogPannel.Title.text = textSettings.TextTitle;
+        dialogPannel.Title.color = textSettings.TitleTextColor;
+        dialogPannel.Title.fontSize = textSettings.TitleFontSize;
+//body
+        dialogPannel.Body.text = textSettings.TextBody;
+        dialogPannel.Body.color = textSettings.BodyTextColor;
+        dialogPannel.Body.fontSize = textSettings.BodyFontSize;
+
     }
 
     private void PickUpObject(GameObject obj)

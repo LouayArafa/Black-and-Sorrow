@@ -12,9 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dffe9ad85f0a2d4ea1d85254d9becfa, type: 3}
   m_Name: PumpkinText
   m_EditorClassIdentifier: 
-  textContent: 
-  textColor: {r: 1, g: 1, b: 1, a: 1}
-  fontSize: 14
-  useBold: 0
-  useItalic: 0
-  useUnderline: 0
+  TextTitle: Pumpkin
+  TitleTextColor: {r: 1, g: 0.30576408, b: 0, a: 1}
+  TitleFontSize: 40
+  TitleUseBold: 1
+  TitleUseItalic: 0
+  TitleUseUnderline: 0
+  TextBody: Pick it up
+  BodyTextColor: {r: 1, g: 1, b: 1, a: 1}
+  BodyFontSize: 36
+  BodyUseBold: 0
+  BodyUseItalic: 0
+  BodyUseUnderline: 0

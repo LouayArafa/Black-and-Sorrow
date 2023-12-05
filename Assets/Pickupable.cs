@@ -4,22 +4,14 @@ using UnityEngine;
 
 public class Pickupable : MonoBehaviour
 {
-
-    public bool _IsLookedAt = false;
-    public bool _IsPickedUp = false;
     public bool _IsInteractable = true;
 
-    [SerializeField] private TextSettings settings;
+    [SerializeField] public TextSettings settings;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Update()
     {
-        
-    }
+        if (!_IsInteractable)
+            return;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

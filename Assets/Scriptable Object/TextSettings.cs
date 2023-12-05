@@ -5,15 +5,22 @@ using TMPro;
 public class TextSettings : ScriptableObject
 {
     [Header("Text Settings")]
-
-    public string textTitle;
+    
     [TextArea(3, 10)]
-    public string textContent;
+    public string TextTitle;
+    public Color TitleTextColor = Color.white;
+    public int TitleFontSize = 36;
+    public bool TitleUseBold = false;
+    public bool TitleUseItalic = false;
+    public bool TitleUseUnderline = false;
 
-    public Color textColor = Color.white;
-    public int fontSize = 36;
-    public bool useBold = false;
-    public bool useItalic = false;
-    public bool useUnderline = false;
+    [TextArea(3, 10)]
+    public string TextBody;
+
+    public Color BodyTextColor = Color.white;
+    public int BodyFontSize = 36;
+    public bool BodyUseBold = false;
+    public bool BodyUseItalic = false;
+    public bool BodyUseUnderline = false;
 
 }
