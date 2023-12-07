@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dffe9ad85f0a2d4ea1d85254d9becfa, type: 3}
+  m_Name: Pumpkin Text
+  m_EditorClassIdentifier: 
+  TitleText_Look: "jack-o'-lantern\r"
+  TitleTextColor_Look: {r: 1, g: 0.374343, b: 0, a: 1}
+  TitleFontSize_Look: 48
+  TitleUseBold_Look: 1
+  TitleUseItalic_Look: 0
+  TitleUseUnderline_Look: 0
+  BodyText_Look: Something inside
+  BodyTextColor_Look: {r: 1, g: 1, b: 1, a: 1}
+  BodyFontSize_Look: 36
+  BodyUseBold_Look: 0
+  BodyUseItalic_Look: 0
+  BodyUseUnderline_Look: 0
+  BodyText_Pick: 'Letf Click to Crash
+
+    Right Click to Release
+
+'
+  BodyTextColor_Pick: {r: 1, g: 1, b: 1, a: 1}
+  BodyFontSize_Pick: 36
+  BodyUseBold_Pick: 0
+  BodyUseItalic_Pick: 0
+  BodyUseUnderline_Pick: 0

@@ -43,17 +43,39 @@ public class Raycast_Pickup : MonoBehaviour
                 lookedAtObject = hit.collider.gameObject;
                 DisplayText(false);
 
+
+                bool canPick = lookedAtObject.GetComponent<InteractableObject>()._IsPickupable;
+
                 if (Input.GetButtonDown("Fire1"))
                 {
-                    PickUpObject(hit.collider.gameObject);
+                    if (canPick)
+                    {
+                        //Pickup
+                        PickUpObject(hit.collider.gameObject);
+                        DisplayText(true);
+
+                    }
                 }
             }
         }
-        //Throw
         if (Input.GetButtonDown("Fire1") && objectHeld)
         {
-            ThrowObject();
-            StartCoroutine(UpdateObjectHeld(false));
+            bool Storable = pickedObject.GetComponent<InteractableObject>()._IsStorable;
+            if (Storable)
+            {
+                //store it
+                Destroy(pickedObject);
+                StartCoroutine(UpdateObjectHeld(false));
+
+            }
+            else
+            {
+                //Throw
+
+                ThrowObject();
+                StartCoroutine(UpdateObjectHeld(false));
+            }
+            
         }
         //Release
         if (Input.GetButtonDown("Fire2") && objectHeld)
@@ -79,24 +101,36 @@ public class Raycast_Pickup : MonoBehaviour
     {
         if (!picked)
         {
-            TranslateTextSettings(lookedAtObject.GetComponent<Pickupable>().settings);
+            TranslateTextSettings(lookedAtObject.GetComponent<InteractableObject>().settings, false);
         }
         else
         {
-
+            TranslateTextSettings(lookedAtObject.GetComponent<InteractableObject>().settings, true);
         }
     }
 
-    private void TranslateTextSettings(TextSettings textSettings)
+    private void TranslateTextSettings(TextSettings textSettings, bool picked)
     {
-//title
-        dialogPannel.Title.text = textSettings.TextTitle;
-        dialogPannel.Title.color = textSettings.TitleTextColor;
-        dialogPannel.Title.fontSize = textSettings.TitleFontSize;
-//body
-        dialogPannel.Body.text = textSettings.TextBody;
-        dialogPannel.Body.color = textSettings.BodyTextColor;
-        dialogPannel.Body.fontSize = textSettings.BodyFontSize;
+        
+            //title
+        dialogPannel.Title.text = textSettings.TitleText_Look;
+        dialogPannel.Title.color = textSettings.TitleTextColor_Look;
+        dialogPannel.Title.fontSize = textSettings.TitleFontSize_Look;
+
+        if (!picked)
+        {
+            //body
+            dialogPannel.Body.text = textSettings.BodyText_Look;
+            dialogPannel.Body.color = textSettings.BodyTextColor_Look;
+            dialogPannel.Body.fontSize = textSettings.BodyFontSize_Look;
+        }
+        else
+        {
+            //body
+            dialogPannel.Body.text = textSettings.BodyText_Pick;
+            dialogPannel.Body.color = textSettings.BodyTextColor_Pick;
+            dialogPannel.Body.fontSize = textSettings.BodyFontSize_Pick;
+        }
 
     }
 
@@ -135,6 +169,8 @@ public class Raycast_Pickup : MonoBehaviour
         pickedObject.transform.Rotate(0.3f, 0.1f, 0.2f);
     }
 
+
+    //to avoid spam picking 
     private IEnumerator UpdateObjectHeld(bool state)
     {
         yield return new WaitForSeconds(0.4f);
