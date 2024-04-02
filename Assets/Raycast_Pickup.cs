@@ -7,6 +7,7 @@ public class Raycast_Pickup : MonoBehaviour
     [SerializeField] private LayerMask pickupLayer;
     [SerializeField] private string pickupTag = "Pickupable";
     [SerializeField] private Camera mainCam;
+    [SerializeField] private float capsuleRadius = 0.5f; // Set your desired radius
 
     [SerializeField] private DialogPannel dialogPannel;
     
@@ -27,71 +28,66 @@ public class Raycast_Pickup : MonoBehaviour
             Debug.LogError("MainCam not assigned to Raycast_Pickup script!");
         }
     }
-
     private void Update()
     {
-        // Cast a ray from the camera's position forward
-        Ray ray = new Ray(mainCam.transform.position, mainCam.transform.forward);
+        // Set up capsule cast parameters
+        Vector3 capsuleStart = mainCam.transform.position;
+        Vector3 capsuleEnd = mainCam.transform.position + mainCam.transform.forward * raycastDistance;
 
-        Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.green);
-
-        if (Physics.Raycast(ray, out RaycastHit hit, raycastDistance, pickupLayer))
+        // Perform capsule cast
+        if (Physics.CapsuleCast(capsuleStart, capsuleEnd, capsuleRadius, mainCam.transform.forward, out RaycastHit hit, raycastDistance, pickupLayer))
         {
             if (hit.collider.CompareTag(pickupTag))
             {
-                Debug.Log("Looking at " + hit.collider.gameObject.name);
+                // Debug.Log("Looking at " + hit.collider.gameObject.name);
                 lookedAtObject = hit.collider.gameObject;
-                DisplayText(false);
-
-
-                bool canPick = lookedAtObject.GetComponent<InteractableObject>()._IsPickupable;
-
-                if (Input.GetButtonDown("Fire1"))
-                {
-                    if (canPick)
-                    {
-                        //Pickup
-                        PickUpObject(hit.collider.gameObject);
-                        DisplayText(true);
-
-                    }
-                }
-            }
-        }
-        if (Input.GetButtonDown("Fire1") && objectHeld)
-        {
-            bool Storable = pickedObject.GetComponent<InteractableObject>()._IsStorable;
-            if (Storable)
-            {
-                //store it
-                Destroy(pickedObject);
-                StartCoroutine(UpdateObjectHeld(false));
-
             }
             else
             {
-                //Throw
-
-                ThrowObject();
-                StartCoroutine(UpdateObjectHeld(false));
+                lookedAtObject = null;
             }
-            
         }
-        //Release
-        if (Input.GetButtonDown("Fire2") && objectHeld)
+        else
         {
-            ReleaseObject();
-            StartCoroutine(UpdateObjectHeld(false));
+            lookedAtObject = null; // Set to null if there is no hit
         }
+
+        // Debug draw the capsule cast
+      
+        DrawCapsule(capsuleStart, capsuleEnd, capsuleRadius, Color.green);
+
+        test(lookedAtObject);
     }
 
-    private void LateUpdate()
+    private void test(bool pg)
     {
-        if (pickedObject != null)
-        {
-            UpdatePickedObjectPosition();
-        }
+        Debug.Log(pg);
     }
+    private void DrawCapsule(Vector3 start, Vector3 end, float radius, Color color)
+    {
+        // Draw the center line
+        Debug.DrawLine(start, end, color);
+
+        // Draw the top and bottom circles
+        Debug.DrawRay(start, Vector3.up * radius, color);
+        Debug.DrawRay(start, Vector3.down * radius, color);
+        Debug.DrawRay(end, Vector3.up * radius, color);
+        Debug.DrawRay(end, Vector3.down * radius, color);
+
+        // Draw the connecting lines between circles
+        Debug.DrawRay(start + Vector3.up * radius, (end - start).normalized * radius, color);
+        Debug.DrawRay(start - Vector3.up * radius, (end - start).normalized * radius, color);
+        Debug.DrawRay(end + Vector3.up * radius, (start - end).normalized * radius, color);
+        Debug.DrawRay(end - Vector3.up * radius, (start - end).normalized * radius, color);
+    }
+
+    /* private void LateUpdate()
+     {
+         if (pickedObject != null)
+         {
+             UpdatePickedObjectPosition();
+         }
+     }*/
 
 
 
