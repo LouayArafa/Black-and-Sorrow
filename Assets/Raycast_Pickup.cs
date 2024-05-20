@@ -1,3 +1,7 @@
+/// abandoned script, we will be using triggers instead of raycast
+/// 
+
+
 using System.Collections;
 using UnityEngine;
 
